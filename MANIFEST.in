@@ -1,0 +1,21 @@
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include HISTORY.rst
+include LICENSE
+include README.rst
+
+graft wpgpDownload docs tests
+global-exclude *.py[co]  __pycache__ *.tif
+
+# added by check_manifest.py
+include *.txt
+include Makefile
+include tox.ini
+recursive-include docs *.bat
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs Makefile
+recursive-include tests *.py
+recursive-include wpgpDownload *.csv
+recursive-include wpgpDownload *.gz
+recursive-include wpgpDownload *.ini
