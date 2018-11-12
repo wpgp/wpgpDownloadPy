@@ -56,16 +56,16 @@ class TestCli(object):
         assert result.exit_code == 1
         result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets'])
         assert result.exit_code == 0
-        assert '20010' in result.output
-        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '--id', 20218, '--id', '20231'])
+        assert 'grc' in result.output
+        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '--id', 91, '--id', '3577'])
         assert result.exit_code == 0
-        assert '20218' in result.output
-        assert '20231' in result.output
+        assert '91' in result.output
+        assert '3577' in result.output
 
     def test_cli_download_filter(self,):
-        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '-f', 'night'])
+        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '-f', 'grid-cell'])
         assert result.exit_code == 0
-        assert 'Nighttime' in result.output
+        assert 'Estimated total number of people per grid-cell 2000' in result.output
         assert 'Distance' not in result.output
 
     def test_cli_download_file(self,):

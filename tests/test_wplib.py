@@ -26,7 +26,7 @@ def csv_signature():
 def test_wplib_builin_md5_signature(csv_file):
     from wpgpDownload.utils.misc import md5_digest
     md5 = md5_digest(csv_file)
-    assert md5 == '945bdef9c0a7c8395830e5b13bb8e292'
+    assert md5 == '2f991750498cfc38180a804ace383c06'
 
 
 # noinspection SpellCheckingInspection
@@ -34,7 +34,7 @@ def test_wplib_dl_ftp_md5_signature():
     from wpgpDownload import wpFtp
     ftp = wpFtp()
 
-    assert ftp.csv_signature == '945bdef9c0a7c8395830e5b13bb8e292'
+    assert ftp.csv_signature == '2f991750498cfc38180a804ace383c06'
 
 
 # noinspection SpellCheckingInspection
@@ -70,5 +70,5 @@ def test_wplib_dl_fail_bad_hostname():
     server = "ftp.worldpop.org2.uk"
 
     with pytest.raises(ValueError,
-                       match=r'Could not reach FTP server. Please FTP server address or valid internet access'):
+                       match=r'Could not reach FTP server. Please check if FTP server address is correct'):
         ftp = wpFtp(server)
