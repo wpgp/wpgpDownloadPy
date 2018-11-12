@@ -11,10 +11,9 @@ try:
 except ImportError:
     from pathlib2 import Path
 
-
 BASE_ROOT = Path(__file__).parent
 CSV_FILE = BASE_ROOT / '..' / 'data' / 'wpgAllCovariates.csv.gz'
-_Product = namedtuple('Product', 'idx alpha3 numeric Name CvtName Description Path')
+_Product = namedtuple('Product', 'idx numeric alpha3 name covariate description path')
 _records: List[_Product] = []
 
 if platform.system() == 'Windows':
@@ -25,14 +24,14 @@ if platform.system() == 'Windows':
 else:
     encoding = 'utf-8'
 
-with gzip.open(CSV_FILE, 'rt', encoding=encoding,errors='replace') as csvfile:
+with gzip.open(CSV_FILE, 'rt', encoding=encoding, errors='replace') as csvfile:
     reader = csv.DictReader(csvfile)
     for idx, row in enumerate(reader, 1):
         # add each row to the records list
         _records.append(
-            _Product(idx, row['ISO3'], row['ISOnumber'], row['NameEnglish'], row['CvtName'], row['Description'],
-                     '/WP515640_Global/Covariates/' + row["ISO3"] + '/' +
-                     Path(row['Folder']).joinpath(Path(row['RstName'] + '.tif')).as_posix())
+            # idx numeric alpha3 name covariate description path
+            _Product(idx, row['ISO'], row['ISO3'], row['Country'], row['Covariate'], row['Description'],
+                     Path(row['Folder']) / row['RasterFile'])
         )
 
 
@@ -54,7 +53,7 @@ class _Products(object):
     def __init__(self, iso):
         self.products = _build_index(iso)
 
-    def get(self, idx:int, default=NOT_FOUND) -> _Product:
+    def get(self, idx: int, default=NOT_FOUND) -> _Product:
         res = self.products.get(idx, default)
         if res == NOT_FOUND:
             raise KeyError
@@ -76,7 +75,7 @@ class _Products(object):
 
     def filter(self, filter=str) -> _Product:
         for k, v in self.products.items():
-            if filter.lower() in v.Description.lower():
+            if filter.lower() in v.description.lower():
                 yield k, v
 
 

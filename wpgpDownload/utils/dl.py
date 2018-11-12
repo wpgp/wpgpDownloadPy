@@ -54,7 +54,10 @@ class wpFtp(object):
         p = Path(_config['ftp']['sig'])
         self.ftp.retrbinary('RETR ' + p.as_posix(), bio.write)
         bio.seek(0)
-        return bio.read().decode('utf-8').strip()
+        result = bio.read().decode('utf-8')
+        result = result.strip()
+        result = result.split(' ')[0]
+        return result
 
     def get_timestamp(self, ftp_absolute_path: Union[str, Path]) -> Union[datetime, None]:
         """ Get Time stamp of file in the ftp. Returns None if fails """

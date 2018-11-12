@@ -75,5 +75,8 @@ class _CountryLookup(object):
         except KeyError:
             return False
 
+    @property
+    def by_iso3(self):
+       return _by_alpha3
 
 Countries = _CountryLookup()

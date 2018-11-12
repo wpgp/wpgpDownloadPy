@@ -62,14 +62,14 @@ def wpgp_download(ctx):
 @click.option('-f', '--format', type=click.Choice(['screen', 'json']), default='screen')
 @click.pass_context
 def isos(ctx, format):
-    from wpgpDownload import isos
+    from wpgpDownload import Countries
     if format == 'screen':
-        c = isos.countries
+        c = Countries
         for e in c:
             click.echo('{numeric},{alpha3},{name}'.format(numeric=e.numeric, alpha3=e.alpha3, name=e.name))
     if format == 'json':
         import json
-        json_string = json.dumps(isos._by_alpha3)
+        json_string = json.dumps(Countries.by_iso3)
         click.echo(json_string)
 
     sys.exit(0)
@@ -87,10 +87,10 @@ def isos(ctx, format):
               help='String-Text to filter the results. This string is checked against the description of a product')
 @click.pass_context
 def download(ctx, iso, method, output_folder, datasets, id, filter):
-    from wpgpDownload import isos
+    from wpgpDownload import Countries
     from wpgpDownload.utils.wpcsv import Product
     try:
-        c = isos.countries.get(iso)
+        c = Countries.get(iso)
 
     except KeyError:
         click.echo('%s is not a valid ISO code')
@@ -105,7 +105,7 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
             idx, record = p
             if len(id) > 0 and idx not in id:
                 continue
-            click.echo('{}\t{}\t{}'.format(idx, record.Description, record.Path))
+            click.echo('{}\t{}\t{}'.format(idx, record.description, record.path))
         sys.exit(0)
 
     ftp = ctx.obj['ftp']
@@ -139,7 +139,7 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
             return 0
 
         elif method == 'native':
-            remote_file = record.Path
+            remote_file = record.path
             ftp.download(remote_file, out_folder, progress_bar=True)
     return 0
 
