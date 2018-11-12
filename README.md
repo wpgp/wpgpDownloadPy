@@ -9,7 +9,7 @@ QuickStart
 #### Install
 
 ```bash
-pip install git+https://github.com/wpgp/wplib
+pip install git+https://github.com/wpgp/wpgpDownloadPy
 ```
 ----
 #### Download (CLI)
