@@ -1,7 +1,11 @@
 
-wplib
+wpgpDownload
 =====
 
+About
+-----
+
+The WorldPop Global High Resolution Population Denominators Project, funded by the Bill and Melinda Gates Foundation (OPP1134076), has produced an open-access archive of 3-arc seconds (approximately 100m at the equator) gridded population datasets, also structured by gender and age groups, for 249 countries, dependencies, and territories for 21-years (2000-2020), using the methods described by Stevens et al., 2015 (https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107042), Gaughan et al., 2016 (https://www.nature.com/articles/sdata20165), and Pezzulo et al., 2017 (https://www.nature.com/articles/sdata201789). In addition, the project has also made available the covariate datasets used as inputs to produce the gridded population datasets (Lloyd et al., under review). These datasets are available for download from the WorldPop website and FTP server using a range of methods and tools.
 
 QuickStart
 -----
@@ -30,8 +34,10 @@ dl('GRC','.',['ccilc_dst011_2002','ccilc_dst011_2002'])
 ``` 
 ----
 #### Explore (CLI)
-
+(TODO)
 #### Explore (Library)
+(TODO)
+
 
 Installation
 ------------
