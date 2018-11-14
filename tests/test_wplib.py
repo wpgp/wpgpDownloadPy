@@ -26,7 +26,7 @@ def csv_signature():
 def test_wplib_builin_md5_signature(csv_file):
     from wpgpDownload.utils.misc import md5_digest
     md5 = md5_digest(csv_file)
-    assert md5 == '2f991750498cfc38180a804ace383c06'
+    assert md5 == '21c5ff9445af6890f93561e18ccb05fd'
 
 
 # noinspection SpellCheckingInspection
@@ -34,7 +34,7 @@ def test_wplib_dl_ftp_md5_signature():
     from wpgpDownload import wpFtp
     ftp = wpFtp()
 
-    assert ftp.csv_signature == '2f991750498cfc38180a804ace383c06'
+    assert ftp.csv_signature == '21c5ff9445af6890f93561e18ccb05fd'
 
 
 # noinspection SpellCheckingInspection

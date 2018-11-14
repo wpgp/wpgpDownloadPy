@@ -69,5 +69,5 @@ class TestCli(object):
         assert 'Distance' not in result.output
 
     def test_cli_download_file(self,):
-        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--id', 20218, '--id', '20231'])
+        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--id', 91, '--id', '340', '--id', 0000])
         assert result.exit_code == 0

@@ -18,7 +18,7 @@ def data_folder()->Path:
 
 
 def csv_file()->Path:
-    return data_folder() / 'wpgAllCovariates.csv.gz'
+    return data_folder() / 'wpgpDatasets.csv.gz'
 
 
 def md5_digest(file: Union[Path, str], gz=False)->str:

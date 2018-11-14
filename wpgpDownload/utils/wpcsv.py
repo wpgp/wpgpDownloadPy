@@ -12,8 +12,8 @@ except ImportError:
     from pathlib2 import Path
 
 BASE_ROOT = Path(__file__).parent
-CSV_FILE = BASE_ROOT / '..' / 'data' / 'wpgAllCovariates.csv.gz'
-_Product = namedtuple('Product', 'idx numeric alpha3 name covariate description path')
+CSV_FILE = BASE_ROOT / '..' / 'data' / 'wpgpDatasets.csv.gz'
+_Product = namedtuple('Product', 'idx numeric alpha3 country_name dataset_name description path')
 _records: List[_Product] = []
 
 if platform.system() == 'Windows':
@@ -29,9 +29,9 @@ with gzip.open(CSV_FILE, 'rt', encoding=encoding, errors='replace') as csvfile:
     for idx, row in enumerate(reader, 1):
         # add each row to the records list
         _records.append(
-            # idx numeric alpha3 name covariate description path
-            _Product(idx, row['ISO'], row['ISO3'], row['Country'], row['Covariate'], row['Description'],
-                     Path(row['Folder']) / row['RasterFile'])
+            # idx numeric alpha3 country_name dataset_name description path
+            _Product(int(row['ID']), row['ISO'], row['ISO3'], row['CountryName'], row['DataSetName'], row['Description'],
+                     Path(row['PathToRaster']))
         )
 
 

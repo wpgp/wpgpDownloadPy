@@ -80,7 +80,7 @@ def isos(ctx, format):
 @click.option('-i', '--iso', type=click.STRING, required=True)
 @click.option('--datasets', is_flag=True, is_eager=True,
               help='Print the ISO\'s datasets along with their IDs and exit.')
-@click.option('--id', multiple=True, type=int)
+@click.option('--id', multiple=True, type=str)
 @click.option('--method', type=click.Choice(['native', 'wget', 'curl', 'none']), default='native')
 @click.option('-o', '--output_folder', type=click.Path(exists=True), help='Folder where any downloads will be stored')
 @click.option('-f', '--filter', type=str,
@@ -103,7 +103,7 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
     if datasets:
         for p in products:
             idx, record = p
-            if len(id) > 0 and idx not in id:
+            if len(id) > 0 and record.idx not in map(int, id):
                 continue
             click.echo('{}\t{}\t{}'.format(idx, record.description, record.path))
         sys.exit(0)
@@ -113,7 +113,7 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
 
     for p in products:
         idx, record = p
-        if len(id) > 0 and idx not in id:
+        if len(id) > 0 and idx not in map(int, id):
             continue
 
         if method == 'none':
