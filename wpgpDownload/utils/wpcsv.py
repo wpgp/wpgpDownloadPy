@@ -53,13 +53,13 @@ class _Products(object):
     def __init__(self, iso):
         self.products = _build_index(iso)
 
-    def get(self, idx: int, default=NOT_FOUND) -> _Product:
+    def get(self, idx, default=NOT_FOUND) -> _Product:
         res = self.products.get(idx, default)
         if res == NOT_FOUND:
             raise KeyError
         return res
 
-    def __getitem__(self, item: int) -> _Product:
+    def __getitem__(self, item) -> _Product:
         return self.get(item)
 
     def iter_download_urls(self):

@@ -1,6 +1,5 @@
 import gzip
 from hashlib import md5
-from typing import Union
 
 try:
     from pathlib import Path
@@ -8,20 +7,20 @@ except ImportError:
     from pathlib2 import Path
 
 
-def library_root_path()->Path:
+def library_root_path():
     path = Path(Path(__file__).parent / '..')
     return path
 
 
-def data_folder()->Path:
+def data_folder():
     return library_root_path() / 'data'
 
 
-def csv_file()->Path:
+def csv_file():
     return data_folder() / 'wpgpDatasets.csv.gz'
 
 
-def md5_digest(file: Union[Path, str], gz=False)->str:
+def md5_digest(file, gz=False):
     """
      Returns the MD5 signature of the file.
     :param file: path to the file to generate the md5 signature.

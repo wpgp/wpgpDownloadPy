@@ -41,7 +41,7 @@ def refresh_csv():
                 shutil.copyfileobj(f_in, f_out)
 
 
-def download_country_covariates(ISO, out_folder: Union[Path, str], filter: Optional[List[str]] = None) -> None:
+def download_country_covariates(ISO, out_folder, filter = None) -> None:
     """
     :param filter: A list of CvtName to the download.
     :type filter: List
@@ -73,7 +73,7 @@ def download_country_covariates(ISO, out_folder: Union[Path, str], filter: Optio
         _ftp.download(e.Path, out_folder)
 
 
-def download_CSVFileAllCovariates(dest_folder: Union[Path, str]):
+def download_CSVFileAllCovariates(dest_folder):
     dst = Path(dest_folder)
     if not dst.exists():
         dst.mkdir(parents=True)

@@ -59,7 +59,7 @@ class wpFtp(object):
         result = result.split(' ')[0]
         return result
 
-    def get_timestamp(self, ftp_absolute_path: Union[str, Path]) -> Union[datetime, None]:
+    def get_timestamp(self, ftp_absolute_path):
         """ Get Time stamp of file in the ftp. Returns None if fails """
 
         p = Path(ftp_absolute_path)
@@ -70,7 +70,7 @@ class wpFtp(object):
 
         return datetime.strptime(time, '%Y%m%d%H%M%S')
 
-    def get_filesize(self, ftp_absolute_path: Union[Path, str]) -> Union[int, None]:
+    def get_filesize(self, ftp_absolute_path):
         """ Returns the file size from the ftp.
             Return None if the file is not in the ftp. """
 
@@ -83,8 +83,8 @@ class wpFtp(object):
 
         return None
 
-    def download(self, from_ftp_absolute_path: Union[Path, str], to_local_absolute_path: Union[Path, str],
-                 progress_bar=False, callback=None) -> Path:
+    def download(self, from_ftp_absolute_path, to_local_absolute_path,
+                 progress_bar=False, callback=None):
         """ Download a file from the remote ftp, stores is locally.
 
         If file exists locally, it is removed beforehand.
