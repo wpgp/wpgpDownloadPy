@@ -17,7 +17,6 @@ requirements = ['Click<8',
                 'pathlib2; python_version < "3.4"',
                 'future-fstrings; python_version < "3.6"',
                 'configparser; python_version < "3"',
-                'typing; python_version < "3"',
                 'colorama; platform_system=="Windows"',
                 ]
 

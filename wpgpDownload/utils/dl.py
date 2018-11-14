@@ -3,7 +3,6 @@ import logging
 import os
 from configparser import ConfigParser
 from datetime import datetime
-from typing import Union
 from socket import gaierror
 from io import BytesIO
 import click
@@ -49,7 +48,7 @@ class wpFtp(object):
             self.ftp.close()
 
     @property
-    def csv_signature(self) -> str:
+    def csv_signature(self):
         bio = BytesIO()
         p = Path(_config['ftp']['sig'])
         self.ftp.retrbinary('RETR ' + p.as_posix(), bio.write)

@@ -41,7 +41,7 @@ def refresh_csv():
                 shutil.copyfileobj(f_in, f_out)
 
 
-def download_country_covariates(ISO, out_folder, filter = None) -> None:
+def download_country_covariates(ISO, out_folder, filter = None):
     """
     :param filter: A list of CvtName to the download.
     :type filter: List

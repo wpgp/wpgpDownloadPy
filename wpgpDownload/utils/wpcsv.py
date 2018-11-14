@@ -14,7 +14,7 @@ except ImportError:
 BASE_ROOT = Path(__file__).parent
 CSV_FILE = BASE_ROOT / '..' / 'data' / 'wpgpDatasets.csv.gz'
 _Product = namedtuple('Product', 'idx numeric alpha3 country_name dataset_name description path')
-_records: List[_Product] = []
+_records = []
 
 if platform.system() == 'Windows':
     if sys.version_info.major == 3 and sys.version_info.minor >= 6:
@@ -34,8 +34,7 @@ with gzip.open(CSV_FILE, 'rt', encoding=encoding, errors='replace') as csvfile:
                      Path(row['PathToRaster']))
         )
 
-
-def _build_index(iso) -> dict:
+def _build_index(iso):
     if iso is None:
         raise TypeError('ISO should not be None')
     res = dict((r.idx, r) for r in _records if r.alpha3 == iso)
@@ -53,13 +52,13 @@ class _Products(object):
     def __init__(self, iso):
         self.products = _build_index(iso)
 
-    def get(self, idx, default=NOT_FOUND) -> _Product:
+    def get(self, idx, default=NOT_FOUND):
         res = self.products.get(idx, default)
         if res == NOT_FOUND:
             raise KeyError
         return res
 
-    def __getitem__(self, item) -> _Product:
+    def __getitem__(self, item):
         return self.get(item)
 
     def iter_download_urls(self):
@@ -73,7 +72,7 @@ class _Products(object):
     def __len__(self):
         return len(self.products)
 
-    def filter(self, filter=str) -> _Product:
+    def filter(self, filter=str):
         for k, v in self.products.items():
             if filter.lower() in v.description.lower():
                 yield k, v
