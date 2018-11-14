@@ -42,8 +42,13 @@ def md5_digest(file, gz=False):
         m.update(gzip.open(file.as_posix()).read())
     else:
         m.update(file.open(mode='rb').read()).hex()
+    try:
+        # python 3
+        return m.digest().hex()
+    except AttributeError:
+        # python 2
+        return m.hexdigest()
 
-    return m.digest().hex()
 
 
 CSV_SIGNATURE = md5_digest(csv_file())

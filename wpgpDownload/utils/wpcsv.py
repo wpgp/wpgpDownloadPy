@@ -24,15 +24,27 @@ if platform.system() == 'Windows':
 else:
     encoding = 'utf-8'
 
-with gzip.open(CSV_FILE, 'rt', encoding=encoding, errors='replace') as csvfile:
-    reader = csv.DictReader(csvfile)
-    for idx, row in enumerate(reader, 1):
-        # add each row to the records list
-        _records.append(
-            # idx numeric alpha3 country_name dataset_name description path
-            _Product(int(row['ID']), row['ISO'], row['ISO3'], row['CountryName'], row['DataSetName'], row['Description'],
-                     Path(row['PathToRaster']))
-        )
+if sys.version_info >= (3,):
+    with gzip.open(CSV_FILE, 'rt', encoding=encoding, errors='replace') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for idx, row in enumerate(reader, 1):
+            # add each row to the records list
+            _records.append(
+                # idx numeric alpha3 country_name dataset_name description path
+                _Product(int(row['ID']), row['ISO'], row['ISO3'], row['CountryName'], row['DataSetName'], row['Description'],
+                         Path(row['PathToRaster']))
+            )
+else:
+    CSV_FILE = CSV_FILE.as_posix()
+    with gzip.open(CSV_FILE, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for idx, row in enumerate(reader, 1):
+            # add each row to the records list
+            _records.append(
+                # idx numeric alpha3 country_name dataset_name description path
+                _Product(int(row['ID']), row['ISO'], row['ISO3'], row['CountryName'], row['DataSetName'], row['Description'],
+                         Path(row['PathToRaster']))
+            )
 
 def _build_index(iso):
     if iso is None:

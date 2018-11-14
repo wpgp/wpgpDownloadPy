@@ -15,6 +15,7 @@ test_requirements = ['pytest', ]
 
 requirements = ['Click<8',
                 'pathlib2; python_version < "3.4"',
+                'backports.tempfile; python_version < "3.2"',
                 'future-fstrings; python_version < "3.6"',
                 'configparser; python_version < "3"',
                 'colorama; platform_system=="Windows"',

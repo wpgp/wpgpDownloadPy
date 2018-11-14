@@ -15,7 +15,7 @@ except ImportError:
 from wpgpDownload import ROOT_DIR
 
 _config = ConfigParser()
-_config.read(ROOT_DIR / 'configuration.ini')
+_config.read(Path(ROOT_DIR / 'configuration.ini').as_posix())
 
 
 class wpFtp(object):

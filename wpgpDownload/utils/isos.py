@@ -9,6 +9,8 @@ try:
 except ImportError:
     from pathlib2 import Path
 
+if sys.version_info.major < 3:
+    from io import open
 
 if platform.system() == 'Windows':
     if sys.version_info.major == 3 and sys.version_info.minor >= 6:
@@ -58,6 +60,8 @@ class _CountryLookup(object):
                     r = _by_alpha3.get(k, default)
         else:
             r = default
+        if r == NOT_FOUND:
+            r = _CountryLookup.get(key.encode('utf8'), default=NOT_FOUND)
         if r == NOT_FOUND:
             raise KeyError(key)
         return r

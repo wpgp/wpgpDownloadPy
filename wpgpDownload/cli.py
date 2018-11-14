@@ -7,8 +7,12 @@ import os
 import click
 import gzip
 
-from tempfile import TemporaryDirectory
 from configparser import ConfigParser
+
+try:
+    from tempfile import TemporaryDirectory
+except ImportError:
+    from backports.tempfile import TemporaryDirectory
 
 try:
     from pathlib import Path
@@ -28,7 +32,7 @@ def wpgp_download(ctx):
     ctx.ensure_object(dict)
 
     config = ConfigParser()
-    config.read(ROOT_DIR / 'configuration.ini')
+    config.read(Path(ROOT_DIR / 'configuration.ini').as_posix())
     ftp = wpFtp()
     #
     ctx.obj['ftp'] = ftp
@@ -93,7 +97,7 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
         c = Countries.get(iso)
 
     except KeyError:
-        click.echo('%s is not a valid ISO code')
+        click.echo('%s is not a valid ISO code' % iso)
         sys.exit(1)
 
     products = Product(c.alpha3)

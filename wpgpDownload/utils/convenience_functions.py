@@ -2,10 +2,14 @@
 from typing import Optional, List, Union
 from wpgpDownload.utils.misc import ROOT_DIR
 from configparser import ConfigParser
-from tempfile import TemporaryDirectory
+
 import gzip
 import shutil
 import warnings
+try:
+    from tempfile import TemporaryDirectory
+except ImportError:
+    from backports.tempfile import TemporaryDirectory
 
 try:
     from pathlib import Path
@@ -17,7 +21,7 @@ from wpgpDownload import wpFtp
 from wpgpDownload import CSV_SIGNATURE, DATA_DIR
 
 config = ConfigParser()
-config.read(ROOT_DIR / 'configuration.ini')
+config.read(Path(ROOT_DIR / 'configuration.ini').as_posix())
 manifest_file = config['ftp']['manifest']
 
 
