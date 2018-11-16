@@ -42,26 +42,23 @@ dl('GRC','.',['ccilc_dst011_2002','ccilc_dst011_2002'])
 Installation
 ------------
 
-It is recommended to create a new virtual environment using a modern python interpreter (>3.6).
+It is recommended to create a new virtual environment using a modern python interpreter (>3.6) to isolate your installations from your default interpreter.
 
-If you don't know what a virtual environment is, basically an isolated replication of your python interpreter
-and when used all installations or changes are happening in it shielding your default interpreter.
+For more information please see Python's ve (virtual enviroment) tutorial [here][1].
 
-For more information you can read Python's ve (virtual enviroment) tutorial [here][1].
-
-Using pip one can install this package directly from github
+Using pip, one can install the package directly from github
 
 ```bash
 pip install git+https://github.com/wpgp/wplib
 ```
 
-This should install the latest version in to your active python environment.
+This should install the latest version into your active python environment.
 
 
 API
 ---
 
-The library contains a bot high level functions and convience functions to browse and download worldpop products. It's usage is straight forward.
+The library contains both high-level and convience functions to browse and download WorldPop products.
 
 ```python
 from wplib.utils.wpcsv import Product
@@ -79,7 +76,7 @@ for idx, p in products:
 # Description   -> Desription of the Covariate
 # Path          -> Ftp Path
 
-# You can filter the products, focusing only in the products you are instrested:
+# You can filter the products, focusing only on the products in which you are interested:
 from wplib.utils.wpcsv import Product
 products = Product('IRQ')
 # as before but this time only list products that contain the word 'night' in their description:
@@ -92,13 +89,13 @@ for idx, p in results:
 Downloading Products
 ====================
 
-Products can be fetched from the FTP location either using the CLI or the build-in downloader
+Products can be fetched from the FTP location either using the CLI or the built-in downloader
 
 
 Using the CLI
 -------------
 
-The command line way is the most straight forward way to locate and download Worldpop products. 
+The command-line method is the most straightforward to locate and download WorldPop products. 
 
 
 ```bash
@@ -108,32 +105,32 @@ $ wplib download -i GRC --datasets
 
 ```
 
-If you want to download ALL the products for that ISO:
+To download ALL the products for that ISO:
 ```bash
-# if -o is omitted it will download by default in the working directory
+# if -o is omitted, it will download by default into the working directory
 $ wplip download -i GRC -o /dest/folder
 ```
 
-If you want to download specific datasets
+To download specific datasets:
 ```bash
 # Download ALL the datasets that
-# containing the word 'distance' for Nepal (NPL)
+# contain the word 'distance' for Nepal (NPL)
 $ wplib download -i NPL -f distance
 ```
 
-You can download individual datasets as well
+To download individual datasets:
 ```bash
-# list available downloads for Greece (GRC) having the word distance in their description.
+# list available downloads for Greece (GRC) having the word 'distance' in their description.
 $ wplib download -f GRC -f distance --dataset
 
-# download the datases with id 23456 and 23457
+# download the datasets with id 23456 and 23457
 $ wplib download -f GRC --id 23457 --id 23456
 ```
 
 API
 ---
 
-In a similar way it is possible to download worldpop datasets using the API:
+In a similar way, it is possible to download WorldPop datasets using the API:
 
 ```python
 from wplib.utils.convenience_functions import download_country_covariates as dl
