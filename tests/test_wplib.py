@@ -31,7 +31,7 @@ def test_wplib_builin_md5_signature(csv_file):
 
 # noinspection SpellCheckingInspection
 def test_wplib_dl_ftp_md5_signature():
-    from wpgpDownload import wpFtp
+    from wpgpDownload.utils.dl import wpFtp
     ftp = wpFtp()
 
     assert ftp.csv_signature == '21c5ff9445af6890f93561e18ccb05fd'
@@ -39,7 +39,7 @@ def test_wplib_dl_ftp_md5_signature():
 
 # noinspection SpellCheckingInspection
 def test_wplib_compare_signatures():
-    from wpgpDownload import wpFtp
+    from wpgpDownload.utils.dl import wpFtp
     ftp = wpFtp()
 
     assert csv_signature() == ftp.csv_signature
@@ -47,7 +47,7 @@ def test_wplib_compare_signatures():
 
 # noinspection SpellCheckingInspection
 def test_wplib_isos():
-    from wpgpDownload import Countries
+    from wpgpDownload.utils import Countries
 
     c = Countries
     assert len(c) == NUMBER_OF_VALID_COUNTRIES
@@ -58,7 +58,7 @@ def test_wplib_isos():
 
 # noinspection SpellCheckingInspection
 def test_wplib_dl():
-    from wpgpDownload import wpFtp
+    from wpgpDownload.utils import wpFtp
 
     ftp = wpFtp()
     assert ftp is not None
