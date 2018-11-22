@@ -20,10 +20,12 @@ pip install git+https://github.com/wpgp/wpgpDownloadPy
 
 ```bash
 # list available downloads for Greece (GRC) having the word distance in their description.
-$ wplib download -f GRC -f distance --dataset
+$ wplwpgpDownload download -f GRC -f distance --dataset
 
 # download the datases with id 23456 and 23457
-$ wplib download -f GRC --id 23457 --id 23456
+# Note the id's should be there.
+
+$ wpgpDownload download -f GRC --id 23457 --id 23456
 ```
 
 #### Download (Library)
@@ -135,8 +137,10 @@ In a similar way, it is possible to download WorldPop datasets using the API:
 
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
+# if you want one covatiate
 dl(ISO='GRC',out_folder='.',filter='ccidadminl1')
-dl('GRC','.',['ccilc_dst011_2002','ccilc_dst011_2002'])
+# of multiple
+dl('GRC','.',['ppp_2002','ppp_2013'])
 ``` 
 
 
