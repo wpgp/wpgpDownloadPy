@@ -1,4 +1,3 @@
-from typing import List
 from collections import namedtuple
 import warnings
 import platform
@@ -31,7 +30,7 @@ if sys.version_info >= (3,):
             # add each row to the records list
             _records.append(
                 # idx numeric alpha3 country_name dataset_name description path
-                _Product(int(row['ID']), row['ISO'], row['ISO3'], row['CountryName'], row['DataSetName'], row['Description'],
+                _Product(int(row['ID']), row['ISO'], row['ISO3'], row['Country'], row['Covariate'], row['Description'],
                          Path(row['PathToRaster']))
             )
 else:
@@ -42,7 +41,7 @@ else:
             # add each row to the records list
             _records.append(
                 # idx numeric alpha3 country_name dataset_name description path
-                _Product(int(row['ID']), row['ISO'], row['ISO3'], row['CountryName'], row['DataSetName'], row['Description'],
+                _Product(int(row['ID']), row['ISO'], row['ISO3'], row['Country'], row['Covariate'], row['Description'],
                          Path(row['PathToRaster']))
             )
 

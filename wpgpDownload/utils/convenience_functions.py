@@ -1,5 +1,4 @@
 # a set of convenience functions
-from typing import Optional, List, Union
 from wpgpDownload.utils.misc import ROOT_DIR
 from configparser import ConfigParser
 
@@ -17,8 +16,8 @@ except ImportError:
     from pathlib2 import Path
 
 
-from wpgpDownload import wpFtp
-from wpgpDownload import CSV_SIGNATURE, DATA_DIR
+from wpgpDownload.utils.dl import wpFtp
+from wpgpDownload.utils.misc import CSV_SIGNATURE, DATA_DIR
 
 config = ConfigParser()
 config.read(Path(ROOT_DIR / 'configuration.ini').as_posix())

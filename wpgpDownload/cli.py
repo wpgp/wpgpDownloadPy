@@ -20,8 +20,8 @@ except ImportError:
     # noinspection PyUnresolvedReferences,PyPackageRequirements
     from pathlib2 import Path
 
-from wpgpDownload import wpFtp
-from wpgpDownload import CSV_SIGNATURE, DATA_DIR, ROOT_DIR
+from wpgpDownload.utils.dl import wpFtp
+from wpgpDownload.utils.misc import CSV_SIGNATURE, DATA_DIR, ROOT_DIR
 
 
 # noinspection SpellCheckingInspection
@@ -40,7 +40,9 @@ def wpgp_download(ctx):
 
     if ftp.csv_signature != CSV_SIGNATURE:
         txt = 'There is an updated manifest file.\n' \
-              'It is recommended to update the existing for access the most current WorldPop datasets'
+              'It is recommended to update the existing for access the most current WorldPop datasetn\n' \
+              'Do you want to do it now?'
+
         try:
             if click.confirm(txt, default=True):
                 with TemporaryDirectory() as t_dir:
@@ -50,8 +52,8 @@ def wpgp_download(ctx):
 
                     # compress and replace the local manifest file in the data folder
                     with csv_file.open(mode='rb') as f_in:
-                        f_out = DATA_DIR / 'wpgAllCovariates.csv.gz'
-                        with gzip.open(f_out, 'wb') as f_out:
+                        f_out = DATA_DIR / 'wpgpDatasets.csv.gz'
+                        with gzip.open(f_out.as_posix(), 'wb') as f_out:
                             shutil.copyfileobj(f_in, f_out)
 
         # the user has chosen to ABORT the operation
@@ -66,7 +68,7 @@ def wpgp_download(ctx):
 @click.option('-f', '--format', type=click.Choice(['screen', 'json']), default='screen')
 @click.pass_context
 def isos(ctx, format):
-    from wpgpDownload import Countries
+    from wpgpDownload.utils import Countries
     if format == 'screen':
         c = Countries
         for e in c:
@@ -91,7 +93,7 @@ def isos(ctx, format):
               help='String-Text to filter the results. This string is checked against the description of a product')
 @click.pass_context
 def download(ctx, iso, method, output_folder, datasets, id, filter):
-    from wpgpDownload import Countries
+    from wpgpDownload.utils import Countries
     from wpgpDownload.utils.wpcsv import Product
     try:
         c = Countries.get(iso)
