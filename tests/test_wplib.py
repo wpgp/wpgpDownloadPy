@@ -66,7 +66,7 @@ def test_wplib_dl():
 
 # noinspection SpellCheckingInspection
 def test_wplib_dl_fail_bad_hostname():
-    from wpgpDownload import wpFtp
+    from wpgpDownload.utils import wpFtp
     server = "ftp.worldpop.org2.uk"
 
     with pytest.raises(ValueError,
