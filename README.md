@@ -28,7 +28,7 @@ $ wplib download -f GRC --id 23457 --id 23456
 
 #### Download (Library)
 ```python
-from wplib.utils.convenience_functions import download_country_covariates as dl
+from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
 dl(ISO='GRC',out_folder='.',filter='ccidadminl1')
 dl('GRC','.',['ccilc_dst011_2002','ccilc_dst011_2002'])
 ``` 
@@ -49,7 +49,7 @@ For more information please see Python's ve (virtual enviroment) tutorial [here]
 Using pip, one can install the package directly from github
 
 ```bash
-pip install git+https://github.com/wpgp/wplib
+pip install git+https://github.com/wpgp/wpgpDownloadPy
 ```
 
 This should install the latest version into your active python environment.
@@ -61,13 +61,14 @@ API
 The library contains both high-level and convience functions to browse and download WorldPop products.
 
 ```python
-from wplib.utils.wpcsv import Product
+from wpgpDownload.utils.wpcsv import Product
 products = Product('GRC')  # Where instead of GRC it could be any ISO code.
 
 #  to list all the products for GRC
 for idx, p in products:
     print('%s/%s\t%s\t%s' % (idx, p.Name,p.CvtName,p.Path))
 
+# Other covariates that you can call from a Product:
 # idx           -> Position in the CSV file.
 # alpha3        -> alphabetical ISO
 # numeric       -> Numerical ISO code
@@ -77,7 +78,7 @@ for idx, p in products:
 # Path          -> Ftp Path
 
 # You can filter the products, focusing only on the products in which you are interested:
-from wplib.utils.wpcsv import Product
+from wpgpDownload.utils.wpcsv import Product
 products = Product('IRQ')
 # as before but this time only list products that contain the word 'night' in their description:
 results = products.filter('night')
@@ -100,7 +101,7 @@ The command-line method is the most straightforward to locate and download World
 
 ```bash
 # To list all products for a specific ISO
-$ wplib download -i GRC --datasets
+$ wpgpDownload download -i GRC --datasets
 
 
 ```
@@ -108,23 +109,23 @@ $ wplib download -i GRC --datasets
 To download ALL the products for that ISO:
 ```bash
 # if -o is omitted, it will download by default into the working directory
-$ wplip download -i GRC -o /dest/folder
+$ wpgpDownload download -i GRC -o /dest/folder
 ```
 
 To download specific datasets:
 ```bash
 # Download ALL the datasets that
 # contain the word 'distance' for Nepal (NPL)
-$ wplib download -i NPL -f distance
+$ wpgpDownload download -i NPL -f distance
 ```
 
 To download individual datasets:
 ```bash
 # list available downloads for Greece (GRC) having the word 'distance' in their description.
-$ wplib download -f GRC -f distance --dataset
+$ wpgpDownload download -f GRC -f distance --dataset
 
 # download the datasets with id 23456 and 23457
-$ wplib download -f GRC --id 23457 --id 23456
+$ wpgpDownload download -f GRC --id 23457 --id 23456
 ```
 
 API
@@ -133,7 +134,7 @@ API
 In a similar way, it is possible to download WorldPop datasets using the API:
 
 ```python
-from wplib.utils.convenience_functions import download_country_covariates as dl
+from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
 dl(ISO='GRC',out_folder='.',filter='ccidadminl1')
 dl('GRC','.',['ccilc_dst011_2002','ccilc_dst011_2002'])
 ``` 
