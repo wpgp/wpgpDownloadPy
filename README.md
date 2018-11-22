@@ -32,7 +32,7 @@ $ wpgpDownload download -f GRC --id 23457 --id 23456
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
 dl(ISO='GRC',out_folder='.',filter='ccidadminl1')
-dl('GRC','.',['ccilc_dst011_2002','ccilc_dst011_2002'])
+dl('GRC','.',['ppp_2002','ppp_2013'])
 ``` 
 ----
 #### Explore (CLI)
