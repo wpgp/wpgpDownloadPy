@@ -39,11 +39,12 @@ def refresh_csv():
 
         # compress and replace the local manifest file in the data folder
         with csv_file.open(mode='rb') as f_in:
-            f_out = DATA_DIR / 'wpgAllCovariates.csv.gz'
+            f_out = DATA_DIR / 'wpgpDatasets.csv.gz'
             with gzip.open(f_out, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
 
 
+# TODO: make test case for this
 def download_country_covariates(ISO, out_folder, filter = None):
     """
     :param filter: A list of CvtName to the download.
@@ -61,7 +62,7 @@ def download_country_covariates(ISO, out_folder, filter = None):
     download_list = []
     for idx, p in products:
         if filter is not None:
-            if p.CvtName in filter:
+            if p.dataset_name in filter:
                 download_list.append(p)
             else:
                 continue
@@ -73,7 +74,7 @@ def download_country_covariates(ISO, out_folder, filter = None):
         p_out.mkdir(parents=True)
 
     for e in download_list:
-        _ftp.download(e.Path, out_folder)
+        _ftp.download(e.path, out_folder)
 
 
 def download_CSVFileAllCovariates(dest_folder):
