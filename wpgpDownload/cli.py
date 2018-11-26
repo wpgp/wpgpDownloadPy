@@ -12,6 +12,8 @@ from configparser import ConfigParser
 try:
     from tempfile import TemporaryDirectory
 except ImportError:
+
+    # noinspection PyUnresolvedReferences
     from backports.tempfile import TemporaryDirectory
 
 try:
@@ -97,19 +99,24 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
     from wpgpDownload.utils.wpcsv import Product
     try:
         c = Countries.get(iso)
-
     except KeyError:
         click.echo('%s is not a valid ISO code' % iso)
         sys.exit(1)
 
+    id_list = list(map(int, id)) or []
     products = Product(c.alpha3)
+
+    # filter-out products based on the filter param
     if filter:
         products = products.filter(filter)
 
+    #  show mode
     if datasets:
         for p in products:
             idx, record = p
-            if len(id) > 0 and record.idx not in map(int, id):
+
+            # filter-only products base on the --id number
+            if len(id_list) > 0 and record.idx not in id_list:
                 continue
             click.echo('{}\t{}\t{}'.format(idx, record.description, record.path))
         sys.exit(0)
@@ -117,9 +124,11 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
     ftp = ctx.obj['ftp']
     out_folder = output_folder or Path(os.getcwd())
 
-    for p in products:
-        idx, record = p
-        if len(id) > 0 and idx not in map(int, id):
+    for row in products:
+        idx, record = row
+
+        # filter-only products base on the --id number
+        if len(id_list) > 0 and idx not in id_list:
             continue
 
         if method == 'none':
@@ -129,24 +138,20 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
 
         elif method == 'wget':
             raise NotImplemented('yet')
-            # wget = which('wget') or 'wget'
-            #
-            # for p in products.iter_download_urls():
-            #     url = p
-            #     basename = Path(p).name
-            #
-            #     out_file_path = Path(out_folder).joinpath(basename).as_posix()
-            #     click.echo(f"{wget} --ftp-user='{username}' --ftp-password='{password}' -O {out_file_path} "
-            #                f"{root_url}/{url}")
-            return 0
 
         elif method == 'curl':
             raise NotImplemented('yet')
-            return 0
 
         elif method == 'native':
             remote_file = record.path
             ftp.download(remote_file, out_folder, progress_bar=True)
+
+        id_list.pop(id_list.index(idx))
+
+    if len(id_list) > 0:
+        for i in id_list:
+            click.echo('id: %s  was not found in the manifest.' % i, err=True)
+
     return 0
 
 

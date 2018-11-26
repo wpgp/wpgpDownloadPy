@@ -1,19 +1,24 @@
 # a set of convenience functions
-from wpgpDownload.utils.misc import ROOT_DIR
-from configparser import ConfigParser
-
+from __future__ import print_function
 import gzip
 import shutil
-import warnings
-try:
-    from tempfile import TemporaryDirectory
-except ImportError:
-    from backports.tempfile import TemporaryDirectory
+import sys
 
 try:
     from pathlib import Path
 except ImportError:
     from pathlib2 import Path
+
+try:
+    from tempfile import TemporaryDirectory
+except ImportError:
+    from backports.tempfile import TemporaryDirectory
+
+
+from wpgpDownload.utils.misc import ROOT_DIR
+from configparser import ConfigParser
+
+
 
 
 from wpgpDownload.utils.dl import wpFtp
@@ -23,12 +28,12 @@ config = ConfigParser()
 config.read(Path(ROOT_DIR / 'configuration.ini').as_posix())
 manifest_file = config['ftp']['manifest']
 
-
 _ftp = wpFtp()
 if _ftp.csv_signature != CSV_SIGNATURE:
-    warnings.warn('The current manifest file is either missing or outdated. It is advised to fetch the most recent '
-                  'from the FTP.\n You can do this by running: \n'
-                  '>>> from wplib.utils.convenience_functions import refresh_csv\n>>> refresh_csv()')
+    print('The current manifest file is either missing or outdated. It is advised to fetch the most recent '
+          'from the FTP.\n You can do this by running: \n'
+          '>>> from wplib.utils.convenience_functions import refresh_csv\n'
+          '>>> refresh_csv()')
 
 
 def refresh_csv():
@@ -45,29 +50,39 @@ def refresh_csv():
 
 
 # TODO: make test case for this
-def download_country_covariates(ISO, out_folder, filter = None):
+def download_country_covariates(ISO, out_folder, prod_name):
     """
     :param filter: A list of CvtName to the download.
     :type filter: List
     """
 
     from wpgpDownload.utils.isos import Countries
-    c = Countries.get(ISO)
-    if filter is not None:
-        if isinstance(filter, str):
-            filter = [filter, ]
-
     from wpgpDownload.utils.wpcsv import Product
-    products = Product(c.alpha3)
+
+    if prod_name is None:
+        raise ValueError('prod_name cannot be None.')
+
+    # list-ize the filter param if a string
+    if isinstance(prod_name, str):
+        prod_name = [prod_name, ]
+
+    country = Countries.get(ISO)
+
+    products = Product(country.alpha3)
     download_list = []
     for idx, p in products:
-        if filter is not None:
-            if p.dataset_name in filter:
-                download_list.append(p)
-            else:
-                continue
-        else:
+        if p.dataset_name in prod_name:
+            prod_name.pop(prod_name.index(p.dataset_name))
             download_list.append(p)
+
+    # empty download list
+    if not len(download_list):
+        raise ValueError('None of the product(s) you have requested exist in the manifest')
+
+    # products that were not found
+    if len(prod_name) > 0:
+        for p in prod_name:
+            print('%s was not found in the manifest file' % p, file=sys.stderr)
 
     p_out = Path(out_folder)
     if not p_out.exists():

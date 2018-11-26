@@ -26,7 +26,7 @@ def csv_signature():
 def test_wplib_builin_md5_signature(csv_file):
     from wpgpDownload.utils.misc import md5_digest
     md5 = md5_digest(csv_file)
-    assert md5 == '21c5ff9445af6890f93561e18ccb05fd'
+    assert md5 == 'e169744a9e84120230f916a73fd8a658'
 
 
 # noinspection SpellCheckingInspection
@@ -34,15 +34,15 @@ def test_wplib_dl_ftp_md5_signature():
     from wpgpDownload.utils.dl import wpFtp
     ftp = wpFtp()
 
-    assert ftp.csv_signature == '21c5ff9445af6890f93561e18ccb05fd'
+    assert ftp.csv_signature == 'e169744a9e84120230f916a73fd8a658'
 
 
 # noinspection SpellCheckingInspection
-def test_wplib_compare_signatures():
+def test_wplib_compare_signatures(csv_signature):
     from wpgpDownload.utils.dl import wpFtp
     ftp = wpFtp()
 
-    assert csv_signature() == ftp.csv_signature
+    assert csv_signature == ftp.csv_signature
 
 
 # noinspection SpellCheckingInspection
@@ -57,11 +57,27 @@ def test_wplib_isos():
 
 
 # noinspection SpellCheckingInspection
-def test_wplib_dl():
+def test_wplib_dl(tmpdir):
+
     from wpgpDownload.utils import wpFtp
+    ftp = wpFtp()
+    res = ftp.download('GIS/Population/Global_2000_2020/2000/SLV/slv_ppp_2000.tif', tmpdir)
+    assert res == tmpdir / 'slv_ppp_2000.tif'
+
+
+def test_wplib_has_internet():
+    from wpgpDownload.utils import has_internet
+
+    assert has_internet() is True
+
+
+def test_wplib_dl_err_non_existant_file(tmpdir):
+    from wpgpDownload.utils import wpFtp
+    from ftplib import error_perm
 
     ftp = wpFtp()
-    assert ftp is not None
+    with pytest.raises(error_perm, match='FTP complained for file:*'):
+        res = ftp.download('NON_EXISTANT_FILE', tmpdir)
 
 
 # noinspection SpellCheckingInspection
@@ -72,3 +88,29 @@ def test_wplib_dl_fail_bad_hostname():
     with pytest.raises(ValueError,
                        match=r'Could not reach FTP server. Please check if FTP server address is correct'):
         ftp = wpFtp(server)
+
+
+def test_wplib_conv_function_warn_on_not_avail_prod(capsys, tmpdir):
+    from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
+
+    dl('GRC', tmpdir, ['ppp_2002', 'ppp_1999', 'ppp_1998'])
+    captured = capsys.readouterr()
+    assert 'ppp_1999' in captured.err
+    assert 'ppp_1998' in captured.err
+    assert 'ppp_2002' not in captured.err
+
+
+def test_wplib_conv_function_err_on_not_avail_prod():
+    from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
+    with pytest.raises(ValueError):
+        dl(ISO='GRC', out_folder='.', prod_name='zzzzz')
+
+
+def test_wplib_conv_function_err_on_empty_prod_request():
+    from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
+    with pytest.raises(ValueError):
+        dl(ISO='GRC', out_folder='.', prod_name='')
+    with pytest.raises(ValueError):
+        dl(ISO='GRC', out_folder='.', prod_name=None)
+    with pytest.raises(TypeError):
+        dl(ISO='GRC', out_folder='.')

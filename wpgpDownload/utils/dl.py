@@ -12,9 +12,11 @@ from ftplib import error_perm
 try:
     from pathlib import Path
 except ImportError:
+    # noinspection PyUnresolvedReferences
     from pathlib2 import Path
 
 from wpgpDownload.utils.misc import ROOT_DIR
+
 
 _config = ConfigParser()
 _config.read(Path(ROOT_DIR / 'configuration.ini').as_posix())
@@ -79,8 +81,7 @@ class wpFtp(object):
         try:
             filesize = self.ftp.size(p.as_posix())
         except error_perm as e:
-            print('Could not get file size: %s' % p.as_posix())
-            raise error_perm
+            raise error_perm('FTP complained for file: \'%s\'.' % p.as_posix())
         # if response_code != '213':
         #     raise wpException("Not ok return code (%s), when tried to retrieve filesize" % response_code)
         if filesize >= 0:

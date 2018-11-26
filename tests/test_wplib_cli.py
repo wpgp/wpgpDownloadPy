@@ -18,9 +18,7 @@ from wpgpDownload import cli
 THIS_FOLDER = Path(__file__).parent.as_posix()
 
 
-@pytest.fixture
-def number_of_valid_countries():
-    return 249
+number_of_valid_countries = 249
 
 
 class TestCli(object):
@@ -43,7 +41,7 @@ class TestCli(object):
         isos_result_json = CliRunner().invoke(cli.wpgp_download, ['isos', '-f', 'json'])
         assert isos_result_json.exit_code == 0
         j = json.loads(isos_result_json.output)
-        assert len(j) == number_of_valid_countries()
+        assert len(j) == number_of_valid_countries
         grc = j.get('GRC', None)
         assert grc is not None
         assert len(grc) == 3
@@ -71,3 +69,5 @@ class TestCli(object):
     def test_cli_download_file(self,):
         result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--id', 91, '--id', '340', '--id', 0000])
         assert result.exit_code == 0
+        assert 'id: 0' in result.output
+    # def test_cli_no_results(self,):

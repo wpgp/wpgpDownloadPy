@@ -18,7 +18,6 @@ requirements = ['Click<8',
                 'backports.tempfile; python_version < "3.2"',
                 'future-fstrings; python_version < "3.6"',
                 'configparser; python_version < "3"',
-                'colorama; platform_system=="Windows"',
                 ]
 
 extras_require = {
