@@ -70,7 +70,7 @@ def download_country_covariates(ISO, out_folder, prod_name):
 
     products = Product(country.alpha3)
     download_list = []
-    for idx, p in products:
+    for p in products:
         if p.dataset_name in prod_name:
             prod_name.pop(prod_name.index(p.dataset_name))
             download_list.append(p)

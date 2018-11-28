@@ -74,19 +74,19 @@ class _Products(object):
 
     def iter_download_urls(self):
         for p in self.products.values():
-            yield p.Path
+            yield p.path
 
     def __iter__(self):
         for k, v in self.products.items():
-            yield k, v
+            yield v
 
     def __len__(self):
         return len(self.products)
 
-    def filter(self, filter=str):
+    def description_contains(self, filter):
         for k, v in self.products.items():
             if filter.lower() in v.description.lower():
-                yield k, v
+                yield v
 
 
 Product = _Products

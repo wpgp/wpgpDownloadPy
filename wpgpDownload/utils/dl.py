@@ -101,6 +101,8 @@ class wpFtp(object):
         :return Path object to downloaded file.
         :rtype Path, None
         """
+        # TODO: - refactor using retrbinary,
+        #       - hide progress bar
         p_ftp = Path(from_ftp_absolute_path)
         p_local = Path(to_local_absolute_path).joinpath(p_ftp.name)
         file_size = self.get_filesize(p_ftp)

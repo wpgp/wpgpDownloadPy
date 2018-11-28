@@ -102,55 +102,57 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
     except KeyError:
         click.echo('%s is not a valid ISO code' % iso)
         sys.exit(1)
-
-    id_list = list(map(int, id)) or []
+        #  show mode
     products = Product(c.alpha3)
+    if datasets:
+        for record in products:
+            click.echo('{}\t{}\t{}'.format(record.idx, record.description, record.path))
+        sys.exit(0)
+
+    id_list_user = set(list(map(int, id)))
+    if not id_list_user:
+        click.secho('You must provide a number of product ids that you wish to download.', err=True)
+        sys.exit(1)
 
     # filter-out products based on the filter param
     if filter:
-        products = products.filter(filter)
+        products = products.description_contains(filter)
 
-    #  show mode
-    if datasets:
-        for p in products:
-            idx, record = p
+    # common products between the ones requested and found
+    id_list = id_list_user.intersection(k.idx for k in products)
+    invalid_ids = id_list_user - id_list
 
-            # filter-only products base on the --id number
-            if len(id_list) > 0 and record.idx not in id_list:
-                continue
-            click.echo('{}\t{}\t{}'.format(idx, record.description, record.path))
-        sys.exit(0)
+    if len(id_list) == 0:
+        click.secho('No products with these ID(s) for that ISO were found. Exiting.', err=True)
+        sys.exit(1)
+
+    if invalid_ids:
+        ids_str = ', '.join(map(str, invalid_ids))
+        click.secho('Warning: The ids (%s) where not found.' % ids_str, err=True)
 
     ftp = ctx.obj['ftp']
     out_folder = output_folder or Path(os.getcwd())
 
-    for row in products:
-        idx, record = row
-
-        # filter-only products base on the --id number
-        if len(id_list) > 0 and idx not in id_list:
-            continue
-
+    # filter-out ids that are not in the dataset
+    for record in [record for record in products if record.idx in id_list]:
         if method == 'none':
             for p in products.iter_download_urls():
                 click.echo(p)
             sys.exit(0)
 
         elif method == 'wget':
-            raise NotImplemented('yet')
+            # TODO: wget
+            click.secho('Exporting a wget download command list is not implemented, yet', err=True)
+            sys.exit(1)
 
         elif method == 'curl':
-            raise NotImplemented('yet')
+            # TODO: curl
+            click.secho('Exporting a curl download command list is not implemented, yet', err=True)
+            sys.exit(1)
 
         elif method == 'native':
             remote_file = record.path
             ftp.download(remote_file, out_folder, progress_bar=True)
-
-        id_list.pop(id_list.index(idx))
-
-    if len(id_list) > 0:
-        for i in id_list:
-            click.echo('id: %s  was not found in the manifest.' % i, err=True)
 
     return 0
 

@@ -31,7 +31,7 @@ $ wpgpDownload download -f GRC --id 23457 --id 23456
 #### Download (Library)
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
-dl(ISO='GRC',out_folder='.',filter='ccidadminl1')
+dl(ISO='GRC',out_folder='.',description_contains='ccidadminl1')
 dl('GRC','.',['ppp_2002','ppp_2013'])
 ``` 
 ----
@@ -79,11 +79,11 @@ for idx, p in products:
 # Description   -> Desription of the Covariate
 # Path          -> Ftp Path
 
-# You can filter the products, focusing only on the products in which you are interested:
+# You can description_contains the products, focusing only on the products in which you are interested:
 from wpgpDownload.utils.wpcsv import Product
 products = Product('IRQ')
 # as before but this time only list products that contain the word 'night' in their description:
-results = products.filter('night')
+results = products.description_contains('night')
 for idx, p in results:
     print('%s/%s\t%s\t%s' % (idx, p.Name,p.CvtName,p.Path))
 
@@ -138,7 +138,7 @@ In a similar way, it is possible to download WorldPop datasets using the API:
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
 # if you want one covatiate
-dl(ISO='GRC',out_folder='.',filter='ccidadminl1')
+dl(ISO='GRC',out_folder='.',description_contains='ccidadminl1')
 # of multiple
 dl('GRC','.',['ppp_2002','ppp_2013'])
 ``` 

@@ -61,7 +61,10 @@ class _CountryLookup(object):
         else:
             r = default
         if r == NOT_FOUND:
-            r = _CountryLookup.get(key.encode('utf8'), default=NOT_FOUND)
+            try:
+                r = _CountryLookup.get(key.encode('unicode-escape'), default=NOT_FOUND)
+            except AttributeError:
+                r = NOT_FOUND
         if r == NOT_FOUND:
             raise KeyError(key)
         return r
@@ -81,6 +84,7 @@ class _CountryLookup(object):
 
     @property
     def by_iso3(self):
-       return _by_alpha3
+        return _by_alpha3
+
 
 Countries = _CountryLookup()
