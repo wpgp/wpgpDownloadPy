@@ -119,7 +119,7 @@ def test_wplib_conv_function_err_on_empty_prod_request():
 def test_wplib_util_wpcsv_products_contain():
     from wpgpDownload.utils.wpcsv import Product
     product = Product('GRC')
-    results = list(product.description_contains('people per grid-cell'))
+    results = sorted(product.description_contains('people per grid-cell'))
 
     assert len(results) == 21
     for year, r in enumerate(results, 2000):

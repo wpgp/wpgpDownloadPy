@@ -72,6 +72,11 @@ class TestCli(object):
         assert 'Estimated total number of people per grid-cell 2000' in result.output
         assert 'Distance' not in result.output
 
+        result = CliRunner().invoke(cli.wpgp_download, ['download','--iso','GRC', '--datasets', '-f' 
+                                                                '00'])
+        print(result.output)
+
+
     def test_cli_download_file(self,):
         result = CliRunner().invoke(cli.wpgp_download,
                                     ['download', '--iso', 'GRC', '--id', 91, '--id', '340', '--id', 0000])
@@ -82,4 +87,4 @@ class TestCli(object):
         result = CliRunner().invoke(cli.wpgp_download,
                                     ['download', '--iso', 'TKL', '--id', 91, '--id', '340', '--id', 0000])
         assert result.exit_code == 1
-        assert 'No products with these ID(s) for that ISO were found. Existing' in result.output
+        assert 'No products with these ID(s) for that ISO were found. Exiting.\n' in result.output

@@ -103,7 +103,12 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
         click.echo('%s is not a valid ISO code' % iso)
         sys.exit(1)
         #  show mode
+
     products = Product(c.alpha3)
+    # filter-out products based on the filter param
+    if filter:
+        products = products.description_contains(filter)
+
     if datasets:
         for record in products:
             click.echo('{}\t{}\t{}'.format(record.idx, record.description, record.path))
@@ -113,10 +118,6 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
     if not id_list_user:
         click.secho('You must provide a number of product ids that you wish to download.', err=True)
         sys.exit(1)
-
-    # filter-out products based on the filter param
-    if filter:
-        products = products.description_contains(filter)
 
     # common products between the ones requested and found
     id_list = id_list_user.intersection(k.idx for k in products)
