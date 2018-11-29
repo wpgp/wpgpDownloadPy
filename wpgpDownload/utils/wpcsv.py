@@ -45,12 +45,19 @@ else:
                          Path(row['PathToRaster']))
             )
 
+ISO_LIST = sorted(set(r.alpha3 for r in _records))
+
+
 def _build_index(iso):
+    # ISO should not be none
     if iso is None:
         raise TypeError('ISO should not be None')
+    # ISO should exist
+    if iso not in ISO_LIST:
+        raise ValueError('This ISO does not exist in the ISO list.')
     res = dict((r.idx, r) for r in _records if r.alpha3 == iso)
     if len(res) == 0:
-        warnings.warn('Found 0 products')
+        raise ValueError('No products were found with that ISO.')
 
     return res
 

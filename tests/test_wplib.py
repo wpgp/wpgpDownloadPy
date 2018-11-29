@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+
 try:
     from pathlib import Path
 except ImportError:
@@ -58,7 +59,6 @@ def test_wplib_isos():
 
 # noinspection SpellCheckingInspection
 def test_wplib_dl(tmpdir):
-
     from wpgpDownload.utils import wpFtp
     ftp = wpFtp()
     res = ftp.download('GIS/Population/Global_2000_2020/2000/SLV/slv_ppp_2000.tif', tmpdir)
@@ -114,3 +114,15 @@ def test_wplib_conv_function_err_on_empty_prod_request():
         dl(ISO='GRC', out_folder='.', prod_name=None)
     with pytest.raises(TypeError):
         dl(ISO='GRC', out_folder='.')
+
+
+def test_wplib_util_wpcsv_products_contain():
+    from wpgpDownload.utils.wpcsv import Product
+    product = Product('GRC')
+    results = list(product.description_contains('people per grid-cell'))
+
+    assert len(results) == 21
+    for year, r in enumerate(results, 2000):
+        assert r.country_name == 'Greece'
+        assert r.dataset_name == 'ppp_%s' % year
+        assert r.path == Path('GIS/Population/Global_2000_2020/%s/GRC/grc_ppp_%s.tif' % (year, year))

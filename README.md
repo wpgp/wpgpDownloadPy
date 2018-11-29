@@ -17,12 +17,19 @@ pip install git+https://github.com/wpgp/wpgpDownloadPy
 ```
 ----
 
-#### List ISOS (CLI)
+#### List Isos (CLI)
 
 To list all the available ISOs along with their ISO numeric/letter code and their English Name
 
 ```bash
 $ wpgpDownload isos
+```
+
+#### List Isos (Python)
+```python
+from wpgpDownload.utils.wpcsv import ISO_LIST
+for iso in ISO_LIST:
+    print(iso)
 ```
 
 #### Download (CLI)
@@ -34,7 +41,7 @@ $ wpgpDownload download -i GRC -f distance --datasets
 
 
 # List all the available datasets for an iso:
-wpgpDownload download -i GRC --datasets
+$ wpgpDownload download -i GRC --datasets
 
 # download the datases with id 23456 and 23457
 # Note the id's should exist.
@@ -42,7 +49,7 @@ wpgpDownload download -i GRC --datasets
 $ wpgpDownload download -i GRC --id 23457 --id 23456
 ```
 
-#### Download (Library)
+#### Download (Python)
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
 dl(ISO='GRC', out_folder='.', prod_name='ccidadminl1')
@@ -78,23 +85,32 @@ API
 
 The library contains both high-level and convience functions to browse and download WorldPop products.
 
+If you want to explore which products are available at the at the WorldPop FTP server, 
+you can do so by the from python like this:
+
 ```python
 from wpgpDownload.utils.wpcsv import Product
-products = Product('GRC')  # Where instead of GRC it could be any ISO code.
+
+products = Product('GRC')  # Where instead of GRC it could be any valid ISO code.
 
 #  to list all the products for GRC
-for idx, p in products:
-    print('%s/%s\t%s\t%s' % (idx, p.Name,p.CvtName,p.Path))
+for p in products:
+    print('%s/%s\t%s\t%s' % (p.idx, p.country_name,p.dataset_name,p.path))
+    # 91 Greece ppp_2000 GIS\Population\Global_2000_2020\2000\GRC\grc_ppp_2000.tif
+    #340 Greece ppp_2001 GIS\Population\Global_2000_2020\2001\GRC\grc_ppp_2001.tif
+    # ....
+```
+    
+Other information that you can call from a Product:
+ - idx           -> Position in the CSV file.
+ - alpha3        -> alphabetical ISO
+ - numeric       -> Numerical ISO code
+ - country_name  -> English Name of the Country
+ - dataset_name  -> Covariate Name
+ - description   -> Description of the Covariate
+ - path          -> Ftp Path
 
-# Other covariates that you can call from a Product:
-# idx           -> Position in the CSV file.
-# alpha3        -> alphabetical ISO
-# numeric       -> Numerical ISO code
-# Name          -> English Name of the Country
-# CvtName       -> Covariate Name
-# Description   -> Desription of the Covariate
-# Path          -> Ftp Path
-
+```python
 # You can description_contains the products, focusing only on the products in which you are interested:
 from wpgpDownload.utils.wpcsv import Product
 products = Product('IRQ')
@@ -102,6 +118,22 @@ products = Product('IRQ')
 results = products.description_contains('night')
 for idx, p in results:
     print('%s/%s\t%s\t%s' % (idx, p.Name,p.CvtName,p.Path))
+```
+To get a [`set`](2) of all the 
+currenly seving isos through the library you can do:
+
+```python
+>>> from wpgpDownload.utils.wpcsv import ISO_LIST
+>>> for iso in ISO_LIST:
+       print(iso)
+ABW
+AFG
+AGO
+AIA
+ALA
+ALB
+AND
+ARE
 
 ```
 
@@ -154,11 +186,10 @@ In a similar way, it is possible to download WorldPop datasets using the API:
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
 # if you want one covatiate
-dl(ISO='GRC',out_folder='.',description_contains='ccidadminl1')
+dl(ISO='GRC',out_folder='.',prod_name='ccidadminl1')
 # of multiple
 dl('GRC','.',['ppp_2002','ppp_2013'])
 ``` 
 
-
-
 [1]: https://docs.python.org/3/tutorial/venv.html
+[2]: https://docs.python.org/3.6/library/stdtypes.html?highlight=set#set-types-set-frozenset
