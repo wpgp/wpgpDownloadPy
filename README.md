@@ -16,27 +16,42 @@ QuickStart
 pip install git+https://github.com/wpgp/wpgpDownloadPy
 ```
 ----
+
+#### List ISOS (CLI)
+
+To list all the available ISOs along with their ISO numeric/letter code and their English Name
+
+```bash
+$ wpgpDownload isos
+```
+
 #### Download (CLI)
 
 ```bash
-# list available downloads for Greece (GRC) having the word distance in their description.
-$ wplwpgpDownload download -f GRC -f distance --dataset
+# list available downloads for Greece (GRC) having the 
+# word distance in their description.
+$ wpgpDownload download -i GRC -f distance --datasets
+
+
+# List all the available datasets for an iso:
+wpgpDownload download -i GRC --datasets
 
 # download the datases with id 23456 and 23457
-# Note the id's should be there.
+# Note the id's should exist.
 
-$ wpgpDownload download -f GRC --id 23457 --id 23456
+$ wpgpDownload download -i GRC --id 23457 --id 23456
 ```
 
 #### Download (Library)
 ```python
 from wpgpDownload.utils.convenience_functions import download_country_covariates as dl
-dl(ISO='GRC',out_folder='.',description_contains='ccidadminl1')
+dl(ISO='GRC', out_folder='.', prod_name='ccidadminl1')
 dl('GRC','.',['ppp_2002','ppp_2013'])
 ``` 
 ----
 #### Explore (CLI)
 (TODO)
+
 #### Explore (Library)
 (TODO)
 
@@ -44,11 +59,12 @@ dl('GRC','.',['ppp_2002','ppp_2013'])
 Installation
 ------------
 
-It is recommended to create a new virtual environment using a modern python interpreter (>3.6) to isolate your installations from your default interpreter.
+It is recommended to create a new virtual environment with a modern python interpreter (>3.6)
+to isolate your installations from your default interpreter.
 
-For more information please see Python's ve (virtual enviroment) tutorial [here][1].
+For more information on what is a virtual enviroment (ve), you can check Python's tutorial on the subject [here][1].
 
-Using pip, one can install the package directly from github
+Using pip, one can install the package directly from github : 
 
 ```bash
 pip install git+https://github.com/wpgp/wpgpDownloadPy
