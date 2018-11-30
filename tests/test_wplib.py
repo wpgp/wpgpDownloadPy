@@ -17,6 +17,12 @@ def csv_file():
     return csv_file()
 
 
+def test_wplib_has_internet():
+    from wpgpDownload.utils import has_internet
+
+    assert has_internet() is True
+
+
 @pytest.fixture(scope='module')
 def csv_signature():
     from wpgpDownload.utils import misc
@@ -63,12 +69,6 @@ def test_wplib_dl(tmpdir):
     ftp = wpFtp()
     res = ftp.download('GIS/Population/Global_2000_2020/2000/SLV/slv_ppp_2000.tif', tmpdir)
     assert res == tmpdir / 'slv_ppp_2000.tif'
-
-
-def test_wplib_has_internet():
-    from wpgpDownload.utils import has_internet
-
-    assert has_internet() is True
 
 
 def test_wplib_dl_err_non_existant_file(tmpdir):

@@ -108,6 +108,8 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
     # filter-out products based on the filter param
     if filter:
         products = products.description_contains(filter)
+        if len(list(products)) == 0:
+            click.echo('The query did not produce any results', err=True)
 
     if datasets:
         for record in products:

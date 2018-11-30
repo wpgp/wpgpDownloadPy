@@ -11,7 +11,6 @@ try:
 except ImportError:
     from pathlib2 import Path
 
-
 from wpgpDownload import cli
 
 NUMBER_OF_VALID_COUNTRIES = 249
@@ -66,18 +65,23 @@ class TestCli(object):
         result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'TKL', '--id', 4704])
         assert result.exit_code == 0
 
-    def test_cli_download_filter(self,):
+    def test_cli_download_filter(self):
         result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '-f', 'grid-cell'])
         assert result.exit_code == 0
         assert 'Estimated total number of people per grid-cell 2000' in result.output
         assert 'Distance' not in result.output
 
-        result = CliRunner().invoke(cli.wpgp_download, ['download','--iso','GRC', '--datasets', '-f' 
-                                                                '00'])
-        print(result.output)
+        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '-f', '00'])
+        # start 2000 end 2009, 10 results
+        for y in range(2000, 2010):
+            assert "Estimated total number of people per grid-cell %s" % y in result.output
+
+    def test_cli_download_filter_no_results(self):
+        result = CliRunner().invoke(cli.wpgp_download, ['download', '--iso', 'GRC', '--datasets', '-f', 'vvvvvv'])
+        assert result.exit_code == 0
 
 
-    def test_cli_download_file(self,):
+    def test_cli_download_file(self, ):
         result = CliRunner().invoke(cli.wpgp_download,
                                     ['download', '--iso', 'GRC', '--id', 91, '--id', '340', '--id', 0000])
         assert result.exit_code == 0
