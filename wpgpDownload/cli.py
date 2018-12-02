@@ -113,7 +113,9 @@ def download(ctx, iso, method, output_folder, datasets, id, filter):
 
     if datasets:
         for record in products:
-            click.echo('{}\t{}\t{}'.format(record.idx, record.description, record.path))
+            # click.echo('{}\t{}\t{}'.format(record.idx, record.description, record.path))
+            click.secho('{}\t'.format(record.idx),nl=False, fg='red')
+            click.secho('{}'.format(record.description), nl=True)
         sys.exit(0)
 
     id_list_user = set(list(map(int, id)))
