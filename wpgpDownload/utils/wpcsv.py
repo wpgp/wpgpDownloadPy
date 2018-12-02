@@ -87,8 +87,8 @@ class _Products(object):
         for k, v in self.products.items():
             yield v
 
-    # def __len__(self):
-    #     return len(list(self.products))
+    def __len__(self):
+        return len(list(self.products))
 
     def description_contains(self, filter):
         result = []

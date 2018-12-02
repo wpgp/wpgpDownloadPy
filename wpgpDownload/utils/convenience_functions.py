@@ -32,7 +32,7 @@ _ftp = wpFtp()
 if _ftp.csv_signature != CSV_SIGNATURE:
     print('The current manifest file is either missing or outdated. It is advised to fetch the most recent '
           'from the FTP.\n You can do this by running: \n'
-          '>>> from wplib.utils.convenience_functions import refresh_csv\n'
+          '>>> from wpgpDownload.utils.convenience_functions import refresh_csv\n'
           '>>> refresh_csv()')
 
 
